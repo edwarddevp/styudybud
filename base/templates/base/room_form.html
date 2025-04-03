@@ -1,0 +1,23 @@
+{% extends 'main.html' %} {% block content%}
+
+<div>
+    {% if room %}
+    <h1>Room: {{ room.name }}</h1>
+    {% else %}
+    <h1>Create Room</h1>
+    {% endif %}
+
+    {% if room %}
+        <form method="post" action="">
+    {% else %}
+        <form method="post" action="">
+    {% endif %}
+
+    {% csrf_token %}
+    <input type="submit" value="Submit" />
+    {{ form.as_p }}
+
+  </form>
+</div>
+
+{% endblock %}
