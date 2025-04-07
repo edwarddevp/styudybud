@@ -1,10 +1,22 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Room
+from django.db.models import Q, Count
+from .models import Room, Topic
 from .forms import RoomForm
 
 def home(request):
-    rooms = Room.objects.all()
-    context = {'rooms': rooms}
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    rooms = Room.objects.filter(
+        Q(topic__name__icontains = q) | 
+        Q(name__icontains = q) | 
+        Q(description__icontains = q) |
+        Q(host__username__icontains = q)
+        )
+
+    # topics = Topic.objects.all()
+    topics = Topic.objects.annotate(room_count=Count('room'))
+    room_count = rooms.count()
+
+    context = {'rooms': rooms, 'topics': topics, 'room_count': room_count}
     return render(request, 'base/home.html', context)
 
 def room(request, pk):

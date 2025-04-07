@@ -2,4 +2,13 @@
   <h1>LOGO</h1>
 </a>
 
+<form action="{% url 'home' %}">
+  <input
+    type="text"
+    name="q"
+    placeholder="Search room, topic or host"
+    value="{{ request.GET.q }}"
+  />
+</form>
+
 <hr />
