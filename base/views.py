@@ -69,7 +69,9 @@ def home(request):
     topics = Topic.objects.annotate(room_count=Count('room'))
     room_count = rooms.count()
 
-    context = {'rooms': rooms, 'topics': topics, 'room_count': room_count}
+    room_messages = Message.objects.filter(Q(room__topic__name__icontains = q))
+
+    context = {'rooms': rooms, 'topics': topics, 'room_count': room_count, 'room_messages': room_messages}
     return render(request, 'base/home.html', context)
 
 def room(request, pk):
